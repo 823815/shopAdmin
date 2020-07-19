@@ -1,0 +1,29 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1594972585294'); /* IE9 */
+  src: url('iconfont.eot?t=1594972585294#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAOQAAsAAAAAB/QAAANDAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDFAqDMIMQATYCJAMQCwoABCAFhG0HTRv/BsgekiSIEHEc8AMce2zM8dD/2Lc7781XTbubxBDrfvomLJk2yHQShEZqEKpZ9xL+n2tvL0V0nE4tUwoM2U9Lk02ZVYUiUFV1TIfg6k4S6OQiSDigtC2wgLAEXpm09ce906b4fJbl8scYLVvLFn+qgLo4oID2xqiLpEAC84axKy/iPoGuDQHQpcz8crCRjGWBeGLQtYBNKiMlq7eFZsneFK9YapcX5RbAS//78R/CwoaiURlrD+9ltAP5pY9mPrwahnrXhRgvAXaIiiNAEjdKU9eZh5UjzHWV6ywcA5pSKL8yHu3/Mybm66yTWP8fr6hEk9HYB2cgV8+KsKMEvzJQmParADao8DLEdu/ac+AN9q+NSVVj0MlcWu/p9BcODk/Rq1eVL1AOdmVUb628zjprP3C462Q+umGPuvdRrsu+iXS15rr1/ZGDub3h3cpT4KWXGRfrv/yqQefsKPPMv+z1Vr3sihdoRgsfo+133nvDi9m+crQAlca9moOFRVQsisXIRNw4Kl402g8XPy9YZmcXF9vHLRctBMEk+TNZJDD0erGMIci5B5fcatbQwSE5pP+5GC6m5rHflOqC+mOuOBOR8nKCnliINx6RzLW0eaioy9/eLDtMpQhUVOTO/NXGLeHwnYPls9rwa6sysmfx5xIyexiFdJymMvrrDXM/vqpqiuQ//sbJI28/NzknfLXpJfgZ3buF9qwqoZ4D0FZoTfw1omVHqpRhZMq0jWt3pQssQUFXF3+rFaY+jSEuWjcS2hYxFC3rULVtutN/BBp6zkBT21noOpB1uGeGMRfZwb4JAGFsG4qht1CN3bnT/xEalr5A0zjMoetyuJ/Zsx0GuzRGWzhtx6092NCmyIJlcbuguZTqOsQWlqT8QCVlmiGPQ4NCsvUsKlM2xgatUxfGuYAFpkg4EzxGRVHBKlOMtI0H6TlX44KDhbIXBbUpEti5iKFacFQ7rFUPzKCNQia4gzm73OdLUTodRC1YjaMSW4liNIbRsVBBQlq4s3i5leNantF00gnDcQJMwCgkWCaYRYlECkwtn2VEteGC6HuUVHGCzV5CWz5oflF6wkPQZUzLKFEjo6Fz7tlATrW7wsOOUJoMAwAA') format('woff2'),
+  url('iconfont.woff?t=1594972585294') format('woff'),
+  url('iconfont.ttf?t=1594972585294') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1594972585294#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-icon-test:before {
+  content: "\e644";
+}
+
+.icon-icon-test1:before {
+  content: "\e645";
+}
+
+.icon-icon-test2:before {
+  content: "\e64d";
+}
+
