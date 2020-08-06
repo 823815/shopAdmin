@@ -16,13 +16,13 @@
         <!--用户名-->
         <el-form-item prop="userName">
           <el-input v-model="loginForm.username">
-            <i slot="prefix" class="iconfont icon-icon-test2"></i>
+            <i slot="prefix" class="iconfont icon-user"></i>
           </el-input>
         </el-form-item>
         <!--密码-->
         <el-form-item prop="passWord">
           <el-input v-model="loginForm.password" type="password">
-            <i slot="prefix" class="iconfont icon-icon-test"></i>
+            <i slot="prefix" class="iconfont icon-3702mima"></i>
           </el-input>
         </el-form-item>
         <!--按钮-->

@@ -2,17 +2,30 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/login.vue'
 import Home from '../components/home.vue'
+import Welcome from '../components/welcome.vue'
+import Users from '../components/Users/users.vue'
 
 Vue.use(Router)
 
 const router = new Router({
     routes: [{
             path: '/login',
-            component: Login
+            component: Login,
         },
         {
             path: '/home',
-            component: Home
+            component: Home,
+            redirect:'/welcome',
+            children:[
+            {
+                path: '/welcome',
+                component: Welcome
+            },
+            {
+                path: '/users',
+                component: Users
+            }
+            ]  
         },
         {
             path: '/',
@@ -29,4 +42,9 @@ router.beforeEach((to, from, next) => {
     if (!tokenStr) return next('/login')
     next()
 })
+// 解决     Avoided redundant navigation to current location  问题报错
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+   return originalPush.call(this, location).catch(err => err)
+}
 export default router
