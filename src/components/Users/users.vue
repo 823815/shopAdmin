@@ -16,7 +16,7 @@
                     </el-input>
                 </el-col>
                 <el-col :span="4">
-                    <el-button type="primary">添加用户</el-button>
+                    <el-button type="primary" @click=" addDialogVisible = true">添加用户</el-button>
                 </el-col>
               </el-row>
             <!-- 用户列表区 -->
@@ -56,11 +56,52 @@
             :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
         </el-card>
+        <!-- 添加对话框 -->
+        <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%" @close="resetDialog">
+            <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
+                <!-- 用户名 -->
+                <el-form-item label="用户名" prop="username">
+                  <el-input v-model="addForm.username"></el-input>
+                </el-form-item>
+                <!-- 密码 -->
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="addForm.password"></el-input>
+                </el-form-item>
+                <!-- 邮箱 -->
+                <el-form-item label="邮箱" prop="email">
+                    <el-input v-model="addForm.email"></el-input>
+                </el-form-item>
+                <!-- 手机 -->
+                <el-form-item label="手机" prop="mobile">
+                    <el-input v-model="addForm.mobile"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="addDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addUser">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
 export default{
     data() {
+        // 验证邮箱的规则
+        var checkEmail = (rules, value, callback) =>{
+            const regEmail = /^([a-zA-Z0-9])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+            if (regEmail.test(value)) {
+                return callback()
+            }
+            callback(new Error('请输入合法的验证规则'))
+        }
+        // 验证手机的规则
+        var checkMobile = (rules, value, callback) =>{
+            const regMobile = /^(0|86|17951)?(13[0-9]|15[0123456789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+            if (regMobile.test(value)) {
+                return callback()
+            }
+            callback(new Error('请输入合法的手机号'))
+        }
         return {
             queryInfo: {
                 query: '',
@@ -68,7 +109,33 @@ export default{
                 pagesize:2
             },
             usersList: [],
-            total: 0
+            total: 0,
+            addDialogVisible: false,
+            addForm: {
+                username: '',
+                password: '',
+                email: '',
+                mobile: ''
+
+            },
+            addFormRules: {
+                username: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { min: 8, max: 15, message: '长度在 8 到 15 个字符', trigger: 'blur' }
+                ],
+                email: [
+                    { required: true, message: '请输入邮箱', trigger: 'blur' },
+                    { validator: checkEmail, trigger: 'blur' },
+                ],
+                mobile: [
+                    { required: true, message: '请输入手机号', trigger: 'blur' },
+                    { validator: checkMobile, trigger: 'blur' },
+                ],
+            }
             
         }
     },
@@ -111,6 +178,25 @@ export default{
         //     const {data:res} = await this.$http.get(`users/${searchId}`)
         //     console.log(res)
         // }
+        resetDialog(){
+            // console.log('111')
+            this.$refs.addFormRef.resetFields()
+        },
+        addUser(){
+            this.$refs.addFormRef.validate(async v => {
+                if (v) {
+                    //验证通过
+                    // console.log(this.addForm)
+                    const {data: res} = await this.$http.post('users',this.addForm)
+                    if (res.meta.status != 201) {
+                        this.$message.error("添加用户失败")
+                    }
+                    this.$message.success("添加用户成功")
+                    this.addDialogVisible = false
+                    this.getUserList()
+                }
+            })
+        }
     },
     /*watch: {
         // 监听queryInfo.query的值的变化实现动态搜索
