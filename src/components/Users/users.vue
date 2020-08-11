@@ -33,11 +33,11 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180px">
-                    <template >
+                    <template slot-scope="scope">
                         <el-row>
                             <!-- 修改按钮 -->
-                            <el-tooltip effect="dark" :enterable="false" content="修改" placement="top">
-                                <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
+                            <el-tooltip effect="dark" :enterable="false" content="修改"  placement="top">
+                                <el-button type="primary" icon="el-icon-edit" size="mini" @click="showDialogVisible(scope.row.id)" ></el-button>
                             </el-tooltip>
                             <!-- 删除按钮 -->
                             <el-tooltip effect="dark" :enterable="false" content="删除" placement="top">
@@ -81,6 +81,27 @@
                 <el-button type="primary" @click="addUser">确 定</el-button>
             </span>
         </el-dialog>
+        <!-- 修改对话框 -->
+        <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%" @close="resetEditDialog">
+            <el-form :model="editForm"  ref="editFormRef" :rules="addFormRules" label-width="70px">
+                <!-- 用户名 -->
+                <el-form-item label="用户名">
+                  <el-input v-model="editForm.username" disabled></el-input>
+                </el-form-item>
+                <!-- 密码 -->
+                <el-form-item label="手机" prop="mobile">
+                    <el-input v-model="editForm.mobile"></el-input>
+                </el-form-item>
+                <!-- 邮箱 -->
+                <el-form-item label="邮箱" prop="email">
+                    <el-input v-model="editForm.email"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="editDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="editUser">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -111,13 +132,14 @@ export default{
             usersList: [],
             total: 0,
             addDialogVisible: false,
+            editDialogVisible: false,
             addForm: {
                 username: '',
                 password: '',
                 email: '',
                 mobile: ''
-
             },
+            editForm: {},
             addFormRules: {
                 username: [
                     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -135,7 +157,7 @@ export default{
                     { required: true, message: '请输入手机号', trigger: 'blur' },
                     { validator: checkMobile, trigger: 'blur' },
                 ],
-            }
+            },
             
         }
     },
@@ -196,6 +218,38 @@ export default{
                     this.getUserList()
                 }
             })
+        },
+        //编辑用户数据
+        async showDialogVisible(id){
+            this.editDialogVisible = true
+            // console.log(value)
+            const {data: res} =await this.$http.get(`users/${id}`)
+            if (res.meta.status !== 200 ) {
+                this.$message.error('编辑失败')
+            }{
+                this.editForm = res.data
+                console.log(this.editForm)
+            }
+        },
+        editUser(){
+            this.$refs.editFormRef.validate(async v => {
+                if (v) {
+                    //验证通过
+                    const {data: res} = await this.$http.put('users/'+this.editForm.id,{email:this.editForm.email,mobile:this.editForm.mobile})
+                    // console.log(res)
+                    if (res.meta.status != 200) {
+                        this.$message.error("编辑用户失败")
+                    }{
+                        this.$message.success("编辑用户成功")
+                        this.editDialogVisible = false
+                        this.getUserList()
+                    }
+                }
+            })
+            
+        },
+        resetEditDialog(){
+            this.$refs.editFormRef.resetFields()
         }
     },
     /*watch: {
