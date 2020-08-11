@@ -270,7 +270,7 @@ export default{
                     this.getUserList()
                 }
             }
-        }
+        },
     },
     /*watch: {
         // 监听queryInfo.query的值的变化实现动态搜索

@@ -24,12 +24,14 @@ import {
     Tooltip,
     Pagination,
     Dialog,
-    MessageBox
+    MessageBox,
+    Tag
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(Button)
 Vue.use(Container)
+Vue.use(Tag)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)

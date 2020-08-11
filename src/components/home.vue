@@ -35,7 +35,7 @@
       </el-aside>
       <!-- 主体区域 -->
       <el-main>
-        <router-view></router-view>
+        <router-view ></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -80,7 +80,7 @@
       saveNavState(data){
         window.sessionStorage.setItem('navPath',data)
         this.navPath = data
-      }
+      },
     },
   }
 </script>
