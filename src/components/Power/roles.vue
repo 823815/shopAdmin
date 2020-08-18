@@ -18,16 +18,32 @@
             <el-table :data="rolesList" stripe border style="width: 100%">
                 <el-table-column type="expand" width="60px">
                     <template slot-scope="scope">
-                        <el-row :class="['bdbuttom', index===0? 'bdtop':'']" v-for="(item1,index) in scope.row.children" :key="item1.id">
+                        <el-row :class="['bdbuttom', index===0? 'bdtop':'' ,'vcenter']" v-for="(item1,index) in scope.row.children" :key="item1.id">
                             <!-- 渲染一级权限 -->
                             <el-col :span= "5">
-                                <el-tag closable>
+                                <el-tag closable @close="removeRightById(scope.row,item1)">
                                     {{item1.authName}}
                                 </el-tag>
                                 <i class="el-icon-caret-right"></i>
                             </el-col>
                             <!-- 渲染二级权限 -->
-                            <el-col :span="19"></el-col>
+                            <el-col :span="19">
+                                <el-row :class="['bdtop', index===0? '':'bdtop', 'vcenter']" v-for="(item2, index) in item1.children" :key="item2.id">
+                                    <el-col :span="6">
+                                        <el-tag closable type="success" @close="removeRightById(scope.row,item2)">
+                                            {{item2.authName}}
+                                        </el-tag>
+                                        <i class="el-icon-caret-right"></i>
+                                    </el-col>
+                                    <!-- 三级权限 -->
+                                    <el-col :span='18' >
+                                        <el-tag v-for="item3 in item2.children" :key="item3.id" closable type="danger" @close="removeRightById(scope.row,item3)">
+                                            {{item3.authName}}
+                                        </el-tag>
+                                        <!-- <i class="el-icon-caret-right"></i> -->
+                                    </el-col>
+                                </el-row>
+                            </el-col>
                         </el-row>
                     </template>
                 </el-table-column>
@@ -42,67 +58,61 @@
                             <!-- 删除按钮 -->
                             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleRole(scope.row.id)">删除</el-button>
                             <!-- 分配权限 -->
-                            <el-button type="warning" icon="el-icon-s-tools" size="mini">分配权限</el-button>
+                            <el-button type="warning" icon="el-icon-s-tools" size="mini" @click="setRightDialog(scope.row)">分配权限</el-button>
                         </el-row>
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- 添加对话框 -->
-            <el-dialog title="添加角色" :visible.sync="addDialogVisible" width="50%" @close="resetDialog">
-                <el-form :model="addRoleForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
-                    <!-- 用户名 -->
-                    <el-form-item label="角色名称" prop="roleName">
-                    <el-input v-model="addRoleForm.roleName"></el-input>
-                    </el-form-item>
-                    <!-- 密码 -->
-                    <el-form-item label="角色描述" prop="roleDesc">
-                        <el-input v-model="addRoleForm.roleDesc"></el-input>
-                    </el-form-item>
-                </el-form>
-                <span slot="footer">
-                    <el-button @click="addDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="addRole">确 定</el-button>
-                </span>
-            </el-dialog>
-            <!-- 编辑对话框 -->
-            <el-dialog title="编辑角色" :visible.sync="editRoleDialogVisible" width="50%" @close="reseteditDialog">
-                <el-form :model="editRoleFrom" :rules="addFormRules" ref="editRoleFromRef" label-width="80px">
-                    <!-- 用户名 -->
-                    <el-form-item label="角色名称">
-                    <el-input v-model="editRoleFrom.roleName" disabled></el-input>
-                    </el-form-item>
-                    <!-- 密码 -->
-                    <el-form-item label="角色描述" prop="roleDesc">
-                        <el-input v-model="editRoleFrom.roleDesc"></el-input>
-                    </el-form-item>
-                </el-form>
-                <span slot="footer">
-                    <el-button @click="addDialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="editRole">确 定</el-button>
-                </span>
-            </el-dialog>
         </el-card>
+         <!-- 添加对话框 -->
+         <el-dialog title="添加角色" :visible.sync="addDialogVisible" width="50%" @close="resetDialog">
+            <el-form :model="addRoleForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
+                <!-- 用户名 -->
+                <el-form-item label="角色名称" prop="roleName">
+                <el-input v-model="addRoleForm.roleName"></el-input>
+                </el-form-item>
+                <!-- 密码 -->
+                <el-form-item label="角色描述" prop="roleDesc">
+                    <el-input v-model="addRoleForm.roleDesc"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer">
+                <el-button @click="addDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addRole">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 编辑对话框 -->
+        <el-dialog title="编辑角色" :visible.sync="editRoleDialogVisible" width="50%" @close="reseteditDialog">
+            <el-form :model="editRoleFrom" :rules="addFormRules" ref="editRoleFromRef" label-width="80px">
+                <!-- 用户名 -->
+                <el-form-item label="角色名称">
+                <el-input v-model="editRoleFrom.roleName" disabled></el-input>
+                </el-form-item>
+                <!-- 密码 -->
+                <el-form-item label="角色描述" prop="roleDesc">
+                    <el-input v-model="editRoleFrom.roleDesc"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer">
+                <el-button @click="addDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="editRole">确 定</el-button>
+            </span>
+        </el-dialog>
+        <!-- 分配权限 -->
+        <el-dialog title="分配权限" :visible.sync="setRightsDialogVisible" width="50%" @close="setRightsDialogClose">
+            <!-- 树形控件 -->
+            <el-tree ref="treeRef" :data="setRightFrom" :props="treeRole" show-checkbox node-key="id" default-expand-all :default-checked-keys='defKeys'>
+            </el-tree>
+            <span slot="footer">
+                <el-button @click="setRightsDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="allotRights" >确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
 export default {
         data() {
-            // // 验证邮箱的规则
-            // var checkEmail = (rules, value, callback) =>{
-            //     const regEmail = /^([a-zA-Z0-9])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
-            //     if (regEmail.test(value)) {
-            //         return callback()
-            //     }
-            //     callback(new Error('请输入合法的验证规则'))
-            // }
-            // // 验证手机的规则
-            // var checkMobile = (rules, value, callback) =>{
-            //     const regMobile = /^(0|86|17951)?(13[0-9]|15[0123456789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
-            //     if (regMobile.test(value)) {
-            //         return callback()
-            //     }
-            //     callback(new Error('请输入合法的手机号'))
-            // }
             return {
                 // 所有角色列表数据
                 rolesList: [],
@@ -111,8 +121,13 @@ export default {
                     roleName: '',
                     roleDesc: ''
                 },
+                roleId:'',
                 // 编辑角色数据
                 editRoleFrom:{},
+                // 权限分配
+                setRightFrom:[],
+                // 默认选中的节点
+                defKeys:[],
                 // 添加角色匹配规则
                 addFormRules:{
                     roleName: [
@@ -124,8 +139,14 @@ export default {
                         { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
                     ]
                 },
+                // 树形控件规则
+                treeRole:{
+                    label: 'authName',
+                    children: 'children'
+                },
                 addDialogVisible: false,
-                editRoleDialogVisible: false
+                editRoleDialogVisible: false,
+                setRightsDialogVisible: false
             }
         },
         created() {
@@ -201,6 +222,66 @@ export default {
                         this.$message.success("删除角色成功")
                         this.getRolesList()
                 }
+            },
+            async removeRightById(roleID, rightId){
+                const val = await this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).catch(err => err)
+                // console.log(res)
+                if (val === 'confirm'){
+                    // console.log(typeof rightId.id)
+                    // console.log(typeof roleID.id)
+                    const {data:res} = await this.$http.delete(`roles/${roleID.id}/rights/${rightId.id}`)
+                    console.log(res)
+                    if (res.meta.status != 200) {
+                            return this.$message.error("删除权限失败")
+                        }
+                        roleID.children = res.data
+                    // this.getRolesList()
+                }
+            },
+            // 展示分配权限页面
+            async setRightDialog(role){
+                this.roleId = role.id
+                const {data: res} = await this.$http.get('rights/tree')
+                // console.log(res)
+                if (res.meta.status != 200) {
+                            return this.$message.error("获取权限失败")
+                        }
+                // console.log(Array.isArray(res.data))
+                console.log(res)
+                this.setRightFrom = res.data
+                this.getLeafList(role, this.defKeys)
+                // console.log(this.defKeys)
+                this.setRightsDialogVisible = true
+                
+
+            },
+            // 用过递归获取角色三级节点id
+            getLeafList(node, arr){
+                if(!node.children){
+                    return arr.push(node.id)
+                }
+                node.children.forEach(ele => {
+                    this.getLeafList(ele, arr)
+                });
+            },
+            setRightsDialogClose(){
+                this.defKeys = []
+            },
+            async allotRights(){
+                const keys = [...this.$refs.treeRef.getCheckedKeys(),...this.$refs.treeRef.getHalfCheckedKeys()]
+                // console.log(keys)
+                const idStr = keys.join(',')
+                const {data: res} = await this.$http.post(`roles/${this.roleId}/rights`,{rids: idStr})
+                if (res.meta.status != 200) {
+                            return this.$message.error("分配权限失败")
+                    }
+                this.$message.success("分配权限成功")
+                this.getRolesList()
+                this.setRightsDialogVisible = false
             }
         },
 }
@@ -214,5 +295,9 @@ export default {
     }
     .bdbuttom{
         border-bottom: 1px solid #eee;
+    }
+    .vcenter{
+        display: flex;
+        align-items: center;
     }
 </style>

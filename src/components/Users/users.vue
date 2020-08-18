@@ -45,7 +45,7 @@
                             </el-tooltip>
                             <!-- 分配角色 -->
                             <el-tooltip effect="dark" :enterable="false" content="分配角色" placement="top">
-                                <el-button type="warning" icon="el-icon-s-tools" size="mini"></el-button>
+                                <el-button type="warning" icon="el-icon-s-tools" size="mini" @click="setRole(scope.row)"></el-button>
                             </el-tooltip>
                         </el-row>
                     </template>
@@ -102,6 +102,19 @@
                 <el-button type="primary" @click="editUser">确 定</el-button>
             </span>
         </el-dialog>
+        <!-- 分配角色对话框 -->
+        <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%" @close="setRoleRoleDialogClosed">
+            <p>当前用户:<b>{{userInfo.username}}</b></p>
+            <p>当前用户角色:<b>{{userInfo.role_name}}</b></p>
+            <p>分配新角色:
+                <el-select v-model="selectRoleID" placeholder="请选择">
+                    <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
+                </el-select></p>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -133,6 +146,7 @@ export default{
             total: 0,
             addDialogVisible: false,
             editDialogVisible: false,
+            setRoleDialogVisible: false,
             addForm: {
                 username: '',
                 password: '',
@@ -158,6 +172,10 @@ export default{
                     { validator: checkMobile, trigger: 'blur' },
                 ],
             },
+            userInfo:{},
+            // 角色列表
+            roleList:[],
+            selectRoleID:''
             
         }
     },
@@ -271,6 +289,35 @@ export default{
                 }
             }
         },
+        // 分配角色
+        async setRole(userinfo){
+            this.userInfo = userinfo
+            // 获取角色列表
+            const {data: res} = await this.$http.get('roles')
+            if (res.meta.status != 200) {
+                    return this.$message.error("获取角色列表失败")
+                }
+            this.roleList = res.data
+            this.setRoleDialogVisible = true
+        },
+        async saveRoleInfo(){
+            if(!this.selectRoleID){
+                return this.$message.error("请选择要分配的角色")
+            }
+            const {data: res} = await this.$http.put(`users/${this.userInfo.id}/role`,{
+                rid: this.selectRoleID
+            })
+            if (res.meta.status != 200) {
+                    return this.$message.error("分配角色失败")
+                }
+            this.$message.success('分配角色成功')
+            this.getUserList()
+            this.setRoleDialogVisible = false
+        },
+        setRoleRoleDialogClosed(){
+            this.selectRoleID = ''
+            this.userInfo = {}
+        }
     },
     /*watch: {
         // 监听queryInfo.query的值的变化实现动态搜索
