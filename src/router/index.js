@@ -6,6 +6,9 @@ import Welcome from '../components/welcome.vue'
 import Users from '../components/Users/users.vue'
 import Roles from '../components/Power/roles.vue'
 import Rights from '../components/Power/rights.vue'
+import Categories from '../components/Goods/categories.vue'
+import Params from '../components/Goods/params.vue'
+import Goods from '../components/Goods/goods.vue'
 
 Vue.use(Router)
 
@@ -34,6 +37,18 @@ const router = new Router({
             {
                 path:'/rights',
                 component:Rights
+            },
+            {
+                path:'/categories',
+                component:Categories
+            },
+            {
+                path:'/params',
+                component:Params
+            },
+            {
+                path:'/goods',
+                component:Goods
             },
             ]  
         },
