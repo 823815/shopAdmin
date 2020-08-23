@@ -30,7 +30,8 @@ import {
     // CheckboxGroup,
     Tree,
     Select,
-    Option
+    Option,
+    Cascader
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -62,6 +63,7 @@ Vue.use(Tree)
 Vue.use(Checkbox)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Cascader)
 // Vue.use(CheckboxGroup)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
