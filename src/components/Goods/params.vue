@@ -147,7 +147,7 @@ export default{
         //获取分类列表数据
         async getCateList(){
                 const {data: res} = await this.$http.get('categories')
-                console.log(res.data)
+                // console.log(res.data)
                 this.cateList = res.data
             },
         // 根据Id值获取参数列表 categories/:id/attributes

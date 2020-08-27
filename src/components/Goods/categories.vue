@@ -151,7 +151,7 @@
             //获取分类列表数据
            async getCategoriesList(){
                 const {data: res} = await this.$http.get('categories',{params: this.queryInfo})
-                console.log(res.data)
+                // console.log(res.data)
                 this.categoriesList = res.data.result
                 this.total = res.data.total
                 
@@ -223,3 +223,28 @@
     width: 100%;
 }
 </style>
+
+
+
+
+
+
+
+
+<!-- <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="goodsParams.pagenum"
+            :page-sizes="[10, 50, 100, 200]"
+            :page-size="goodsParams.pagesize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+          </el-pagination>
+
+          // 页码大小改变时触发
+          // handleSizeChange(ps){
+          //     this.goodsParams.pagesize = ps
+          //     this.getGoodsList()
+          // },
+          // 当前页变动时候触发
+          // handleCurrentChange(pn){
+          //     this.goodsParams.pagenum = pn
+          //     this.getGoodsList()
+          // } -->
