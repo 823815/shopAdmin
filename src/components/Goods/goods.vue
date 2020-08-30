@@ -15,7 +15,7 @@
                     </el-input>
                 </el-col>
                 <el-col :span="4">
-                    <el-button type="primary" >添加商品</el-button>
+                    <el-button type="primary" @click="goAdd">添加商品</el-button>
                 </el-col>
             </el-row>
             <!-- 用户列表区 -->
@@ -96,6 +96,10 @@
                 const {data: res} =await this.$http.delete(`goods/${id}`)
                 if(res.meta.status != 200) return this.$message.error('删除商品失败')
                 this.$message.success('删除商品成功')
+            },
+            //转到添加商品页面
+            goAdd(){
+                this.$router.push('/goods/add')
             }
         },
     }

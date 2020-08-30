@@ -27,14 +27,18 @@ import {
     MessageBox,
     Tag,
     Checkbox,
-    // CheckboxGroup,
+    CheckboxGroup,
     Tree,
     Select,
     Option,
     Cascader,
     Alert,
     Tabs,
-    TabPane
+    TabPane,
+    Steps,
+    Step,
+    Upload,
+    Image
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -70,6 +74,11 @@ Vue.use(Cascader)
 Vue.use(Alert)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(CheckboxGroup)
+Vue.use(Upload)
+Vue.use(Image)
 // Vue.use(CheckboxGroup)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

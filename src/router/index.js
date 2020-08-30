@@ -9,6 +9,7 @@ import Rights from '../components/Power/rights.vue'
 import Categories from '../components/Goods/categories.vue'
 import Params from '../components/Goods/params.vue'
 import Goods from '../components/Goods/goods.vue'
+import Add from '../components/Goods/add.vue'
 
 Vue.use(Router)
 
@@ -48,8 +49,12 @@ const router = new Router({
             },
             {
                 path:'/goods',
-                component:Goods
+                component:Goods,                  
             },
+            {
+                path:'/goods/add',
+                component:Add
+            }
             ]  
         },
         {
