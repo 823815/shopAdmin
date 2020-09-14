@@ -96,6 +96,7 @@
                 const {data: res} =await this.$http.delete(`goods/${id}`)
                 if(res.meta.status != 200) return this.$message.error('删除商品失败')
                 this.$message.success('删除商品成功')
+                this.getGoodsList()
             },
             //转到添加商品页面
             goAdd(){

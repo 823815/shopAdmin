@@ -38,7 +38,9 @@ import {
     Steps,
     Step,
     Upload,
-    Image
+    Image,
+    Timeline,
+    TimelineItem
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -79,6 +81,8 @@ Vue.use(Step)
 Vue.use(CheckboxGroup)
 Vue.use(Upload)
 Vue.use(Image)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 // Vue.use(CheckboxGroup)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
